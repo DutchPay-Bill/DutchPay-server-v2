@@ -1,5 +1,11 @@
-import { registerAs } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
-export const jwtConfig = registerAs('jwt', () => ({
-  secretKey: process.env.SECRET_KEY || null,
-}));
+@Injectable()
+export class JwtService {
+  constructor(private readonly configService: ConfigService) {}
+
+  getSecretKey(): string {
+    return this.configService.get<string>('SECRET_KEY');
+  }
+}

@@ -1,4 +1,3 @@
-// eslint-disable-next-line prettier/prettier
 import {
   ExceptionFilter,
   Catch,
@@ -6,11 +5,11 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { HttpErrorHandler } from './error-handler';
+import { ErrorHandler } from './error-handler';
 
-@Catch(HttpErrorHandler)
-export class HttpExceptionFilter implements ExceptionFilter {
-  catch(exception: HttpErrorHandler, host: ArgumentsHost) {
+@Catch(ErrorHandler)
+export class ErrorCatch implements ExceptionFilter {
+  catch(exception: ErrorHandler, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.status || HttpStatus.INTERNAL_SERVER_ERROR;

@@ -1,28 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-// import { ConfigService } from '@nestjs/config';
-// import { db } from './config/db/dbConnection';
-// import { ValidationPipe } from '@nestjs/common';
-// import middleWares from './middlewares';
-// import corsMiddleware from './middlewares/corsOption';
+import { ConfigService } from '@nestjs/config';
+import { ValidationPipe } from '@nestjs/common';
+import { ErrorCatch } from './common/filters/error-catch.filter';
+import { PrismaService } from './db/db.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // const configService = app.get(ConfigService);
+  const configService = app.get(ConfigService);
+  const prismaService = app.get(PrismaService);
 
   // DB connection
-  // db();
-
-  // app.useGlobalPipes(new ValidationPipe());
-
-  // Middleware setup
-  // middleWares(app);
-
-  // Custom CORS middleware setup
-  // corsMiddleware(app);
-
+  await prismaService.db();
+  // http validation
+  app.useGlobalPipes(new ValidationPipe());
+  // custom error catch
+  app.useGlobalFilters(new ErrorCatch());
   // Server port
-  const serverPort = 3000;
+  const serverPort = configService.get<string>('SERVER_PORT') || 3001;
 
   await app.listen(serverPort);
   console.log(`Nest application is running on: http://localhost:${serverPort}`);

@@ -7,6 +7,8 @@ import { CorsMiddleware } from './common/middlewares/cors-option.middleware';
 import { AuthModule } from './auth/auth.module';
 import { AppService } from './app.service';
 import { AppController } from './app.controller';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthenticationInterceptor } from './common/interceptors/authentication.interceptor';
 
 @Module({
   imports: [
@@ -16,7 +18,13 @@ import { AppController } from './app.controller';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthenticationInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

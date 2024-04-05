@@ -115,7 +115,7 @@ export class AuthController {
     }
   }
 
-  @Post('/login')
+  @Post('/logout')
   @UseFilters(ErrorCatch)
   async userLogout(@Req() req: Request, @Res() res: Response) {
     try {

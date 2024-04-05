@@ -38,20 +38,6 @@ export class AuthService {
   async registerUserbyPhoneService(createUserDto: CreateUserDto) {
     const { fullname, phone_number, password } = createUserDto;
     try {
-      if (!phone_number) {
-        throw new ErrorHandler({
-          success: false,
-          message: 'Phone number cannot be empty',
-          status: 400,
-        });
-      }
-      if (password.length < 6) {
-        throw new ErrorHandler({
-          success: false,
-          message: 'Password must be at least 6 characters long',
-          status: 400,
-        });
-      }
       if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
         throw new ErrorHandler({
           success: false,

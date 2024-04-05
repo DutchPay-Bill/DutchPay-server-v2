@@ -12,9 +12,16 @@ export class ErrorCatch implements ExceptionFilter {
   catch(exception: ErrorHandler, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const status = exception.status || HttpStatus.INTERNAL_SERVER_ERROR;
-    const message = exception.message || 'An error occurred';
 
-    response.status(status).json({ success: false, message });
+    const status = exception.status || HttpStatus.BAD_REQUEST;
+    const message = Array.isArray(exception.message)
+      ? exception.message
+      : [exception.message];
+
+    response.status(status).json({
+      message: message,
+      error: HttpStatus[status],
+      statusCode: status,
+    });
   }
 }

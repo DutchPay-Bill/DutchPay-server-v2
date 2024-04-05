@@ -11,7 +11,6 @@ export class PrismaService {
     });
   }
 
-  // Expose the PrismaClient instance
   get client() {
     return this.prisma;
   }

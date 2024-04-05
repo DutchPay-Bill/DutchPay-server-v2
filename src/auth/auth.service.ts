@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { add } from 'date-fns';
 import { CreateUserDto } from './dto/create-user.dto';
 import { PhoneDto } from './dto/check-phone-number.dto';
@@ -10,10 +9,7 @@ import { PrismaService } from 'src/db/db.service';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private readonly jwt: JwtService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async checkRegisteredPhoneService(phone: PhoneDto) {
     try {
@@ -108,10 +104,7 @@ export class AuthService {
           status: 401,
         });
       }
-      const isPasswordValid = await bcrypt.compare(
-        password,
-        user.password || '',
-      );
+      const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         throw new ErrorHandler({
           success: false,
@@ -121,8 +114,7 @@ export class AuthService {
       }
       const currentDate = new Date();
       const expiredToken = add(currentDate, { weeks: 1 });
-      const accessToken = this.jwt.sign({ id: user.id });
-      return { accessToken, expiredToken };
+      return { user, expiredToken };
     } catch (error: any) {
       console.error(error);
       throw new ErrorHandler({

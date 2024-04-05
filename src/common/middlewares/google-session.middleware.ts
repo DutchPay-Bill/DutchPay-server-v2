@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import session from 'express-session';
-import passport from 'passport';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 @Injectable()
 export class GoogleSessionMiddleware implements NestMiddleware {
@@ -16,9 +16,18 @@ export class GoogleSessionMiddleware implements NestMiddleware {
       secret: 'sessionSecret',
       resave: false,
       saveUninitialized: false,
-    })(req, res, next);
+    })(req, res, (err) => {
+      if (err) {
+        return next(err);
+      }
 
-    passport.initialize()(req, res, next);
-    passport.session()(req, res, next);
+      passport.initialize()(req, res, (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        passport.session()(req, res, next);
+      });
+    });
   }
 }

@@ -1,10 +1,9 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import cors, { CorsOptions } from 'cors';
+import * as cors from 'cors';
 
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
-  use(req: Request, res: Response, next: NextFunction) {
+  use(req, res, next) {
     const client = [
       'http://localhost:5173',
       'http://127.0.0.1:5173',
@@ -13,7 +12,7 @@ export class CorsMiddleware implements NestMiddleware {
 
     const clientOrigin = client.includes(req.header('Origin'));
 
-    const corsOptions: CorsOptions = {
+    const corsOptions: cors.CorsOptions = {
       origin: clientOrigin ? true : 'https://www.getpostman.com',
       methods: 'GET, POST, DELETE, PUT, PATCH, OPTIONS, HEAD',
       credentials: true,

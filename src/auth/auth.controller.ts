@@ -114,4 +114,25 @@ export class AuthController {
       return res.redirect(`${process.env.FE_URL}/google-auth/failed`);
     }
   }
+
+  @Post('/login')
+  @UseFilters(ErrorCatch)
+  async userLogout(@Req() req: Request, @Res() res: Response) {
+    try {
+      const expirationDate = new Date('January 1, 2000');
+      res.cookie('access_token', '', {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        expires: expirationDate,
+        path: '/',
+      });
+      return res.json({
+        success: true,
+        message: 'See you next time..!',
+      });
+    } catch (error: any) {
+      throw error;
+    }
+  }
 }

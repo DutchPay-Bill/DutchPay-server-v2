@@ -28,13 +28,6 @@ import { AuthenticationInterceptor } from './common/interceptors/authentication.
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(
-        CorsMiddleware,
-        CookieMiddleware,
-        HelmetMiddleware,
-        GoogleSessionMiddleware,
-      )
-      .forRoutes('*');
+    consumer.apply(CorsMiddleware, CookieMiddleware, HelmetMiddleware, GoogleSessionMiddleware).forRoutes('*');
   }
 }

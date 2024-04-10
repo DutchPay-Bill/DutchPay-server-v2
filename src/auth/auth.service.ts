@@ -5,7 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { PhoneDto } from './dto/check-phone-number.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ErrorHandler } from '../common/filters/error-handler';
-import { PrismaService } from 'src/db/db.service';
+import { PrismaService } from '../db/db.service';
 
 @Injectable()
 export class AuthService {
@@ -19,8 +19,7 @@ export class AuthService {
       if (userPhone) {
         throw new ErrorHandler({
           success: false,
-          message:
-            'Phone Number already registered, please use other Phone Number',
+          message: 'Phone Number already registered, please use other Phone Number',
           status: 409,
         });
       }
@@ -41,8 +40,7 @@ export class AuthService {
       if (!/(?=.*[a-zA-Z])(?=.*[0-9])/.test(password)) {
         throw new ErrorHandler({
           success: false,
-          message:
-            'Password must contain both alphabetic and numeric characters',
+          message: 'Password must contain both alphabetic and numeric characters',
           status: 400,
         });
       }
@@ -52,8 +50,7 @@ export class AuthService {
       if (userPhone) {
         throw new ErrorHandler({
           success: false,
-          message:
-            'Phone Number already registered, please use other Phone Number',
+          message: 'Phone Number already registered, please use other Phone Number',
           status: 409,
         });
       }

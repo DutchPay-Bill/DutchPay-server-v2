@@ -9,21 +9,14 @@ export const JwtSecret = process.env.SECRET_KEY;
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        JwtStrategy.extractJWT,
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ]),
+      jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJWT, ExtractJwt.fromAuthHeaderAsBearerToken()]),
       ignoreExpiration: false,
       secretOrKey: JwtSecret,
     });
   }
 
   private static extractJWT(req: RequestType): string | null {
-    if (
-      req.cookies &&
-      'access_token' in req.cookies &&
-      req.cookies.access_token.length > 0
-    ) {
+    if (req.cookies && 'access_token' in req.cookies && req.cookies.access_token.length > 0) {
       return req.cookies.access_token;
     }
     return null;

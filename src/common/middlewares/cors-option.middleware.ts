@@ -4,11 +4,7 @@ import * as cors from 'cors';
 @Injectable()
 export class CorsMiddleware implements NestMiddleware {
   use(req, res, next) {
-    const client = [
-      'http://localhost:5173',
-      'http://127.0.0.1:5173',
-      'https://dutchpay-bill.web.app',
-    ];
+    const client = ['http://localhost:5173', 'http://127.0.0.1:5173', 'https://dutchpay-bill.web.app'];
 
     const clientOrigin = client.includes(req.header('Origin'));
 

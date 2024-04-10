@@ -6,9 +6,7 @@ import { UnauthorizedRoleException } from '../filters/authorization.filter';
 export class RoleGuard implements CanActivate {
   constructor(private readonly allowedRoles: string[]) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const userRole = request.user.role;
 

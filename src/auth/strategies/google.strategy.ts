@@ -4,10 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 
 @Injectable()
-export class GoogleStrategyService extends PassportStrategy(
-  Strategy,
-  'google',
-) {
+export class GoogleStrategyService extends PassportStrategy(Strategy, 'google') {
   constructor(private readonly googleRegis: AuthService) {
     super({
       clientID: process.env.CLIENT_ID,
@@ -17,16 +14,9 @@ export class GoogleStrategyService extends PassportStrategy(
     });
   }
 
-  async validate(
-    accessToken: string,
-    refreshToken: string,
-    profile: any,
-    done: VerifyCallback,
-  ): Promise<any> {
+  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
     console.log('Google Authentication Profile:', profile);
-    const user = await this.googleRegis.getEmail(
-      profile.emails?.[0].value as string,
-    );
+    const user = await this.googleRegis.getEmail(profile.emails?.[0].value as string);
     try {
       if (!user) {
         const newUser = await this.googleRegis.registerUserbyGoogleService(

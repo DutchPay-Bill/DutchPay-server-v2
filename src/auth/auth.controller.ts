@@ -1,20 +1,11 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseFilters,
-  Get,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseFilters, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { PhoneDto } from './dto/check-phone-number.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { ErrorCatch } from 'src/common/filters/error-catch.filter';
+import { ErrorCatch } from '../common/filters/error-catch.filter';
 import { Request, Response } from 'express';
 
 @Controller('/v1/auth')
@@ -28,8 +19,7 @@ export class AuthController {
   @UseFilters(ErrorCatch)
   async registerByPhone(@Body() createUserDto: CreateUserDto) {
     try {
-      const result =
-        await this.authService.registerUserbyPhoneService(createUserDto);
+      const result = await this.authService.registerUserbyPhoneService(createUserDto);
       return {
         success: true,
         message: 'User registered successfully',
@@ -57,11 +47,7 @@ export class AuthController {
 
   @Post('/login')
   @UseFilters(ErrorCatch)
-  async loginByPhoneNumber(
-    @Body() userData: LoginUserDto,
-    @Req() req: Request,
-    @Res() res: Response,
-  ) {
+  async loginByPhoneNumber(@Body() userData: LoginUserDto, @Req() req: Request, @Res() res: Response) {
     try {
       const result = await this.authService.loginUserService(userData);
       const payload = { id: result.user.id };
@@ -100,6 +86,8 @@ export class AuthController {
         id: user.id,
       };
       const token = this.jwt.sign(payload, { expiresIn: '7d' });
+      // Mocking token for testing purpose
+      // const token = 'dummy_token';
       const oneWeekInSeconds = 7 * 24 * 3600;
       res.cookie('access_token', token, {
         maxAge: oneWeekInSeconds * 1000,

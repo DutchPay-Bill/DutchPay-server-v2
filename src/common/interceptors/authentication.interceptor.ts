@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
-  CallHandler,
-} from '@nestjs/common';
+import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 
@@ -23,9 +18,7 @@ export class AuthenticationInterceptor implements NestInterceptor {
 
     const token = request.cookies.access_token;
     if (!token) {
-      return response
-        .status(401)
-        .json({ success: false, message: 'Unauthorized Access..' });
+      return response.status(401).json({ success: false, message: 'Unauthorized Access..' });
     }
 
     try {
@@ -34,9 +27,7 @@ export class AuthenticationInterceptor implements NestInterceptor {
       request.user = decodedToken;
       return next.handle();
     } catch (error) {
-      return response
-        .status(500)
-        .json({ success: false, message: 'Invalid Request..!' });
+      return response.status(500).json({ success: false, message: 'Invalid Request..!' });
     }
   }
 }

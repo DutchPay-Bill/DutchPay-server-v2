@@ -4,8 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { ValidationPipe } from '@nestjs/common';
 import { ErrorCatch } from './common/filters/error-catch.filter';
 import { PrismaService } from './db/db.service';
-// import * as cors from 'cors';
-// import { corsOptions } from './common/middlewares/cors-option.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

@@ -7,6 +7,8 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/db/prisma.module';
 import { JwtSecret, JwtStrategy } from './strategies/jwt.strategy';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { AuthenticationInterceptor } from '../common/interceptors/authentication.interceptor';
 
 @Module({
   imports: [
@@ -25,6 +27,14 @@ import { JwtSecret, JwtStrategy } from './strategies/jwt.strategy';
     PrismaModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, GoogleStrategyService],
+  providers: [
+    AuthService,
+    JwtStrategy,
+    GoogleStrategyService,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthenticationInterceptor,
+    },
+  ],
 })
 export class AuthModule {}
